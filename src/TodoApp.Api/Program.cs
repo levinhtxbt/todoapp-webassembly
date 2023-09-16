@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Api.Data;
+using TodoApp.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,23 +11,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TodoAppDbContext>(options =>
     options.UseSqlite("Data Source=TodoApp.db"));
 var app = builder.Build();
-
+app.MigrateDbContext<TodoAppDbContext>((context, services) =>
+{
+    var logger = services.GetRequiredService<ILogger<TodoAppDbContext>>();
+    new TodoAppDbContextSeed().SeedAsync(context, logger).Wait();
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider
-        .GetRequiredService<TodoAppDbContext>();
-
-    // Here is the migration executed
-    dbContext.Database.Migrate();
-}
-
 app.UseHttpsRedirection();
 
 var summaries = new[]

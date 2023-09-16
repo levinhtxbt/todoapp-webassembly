@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoApp.Api.Data;
 
@@ -10,9 +11,11 @@ using TodoApp.Api.Data;
 namespace TodoApp.Api.Migrations
 {
     [DbContext(typeof(TodoAppDbContext))]
-    partial class TodoAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230916151128_AddIdentityTables")]
+    partial class AddIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0-rc.1.23419.6");
