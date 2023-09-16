@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using TodoApp.Api.Entities;
-using TodoApp.Api.Enums;
+using TodoApp.Model.Enums;
 
 namespace TodoApp.Api.Data;
 

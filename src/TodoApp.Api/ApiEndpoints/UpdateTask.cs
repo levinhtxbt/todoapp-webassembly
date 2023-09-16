@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Ardalis.ApiEndpoints;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
+using TodoApp.Api.Data;
+using TodoApp.Model.Dto;
+
+namespace TodoApp.Api.ApiEndpoints
+{
+    public class UpdateTask : EndpointBaseAsync.WithRequest<UpdateTaskDto>.WithActionResult
+    {
+        private readonly TodoAppDbContext _dbContext;
+        public UpdateTask(TodoAppDbContext dbContext)
+        {
+            this._dbContext = dbContext;
+        }
+        
+        [HttpPut("/api/tasks/{id}")]
+        [SwaggerOperation(
+            Summary = "Update a Task",
+            Description = "Update a Task",
+            OperationId = "Task.Update",
+            Tags = new[] { "TaskEndpoints" })]
+        public override async Task<ActionResult> HandleAsync([FromRoute] UpdateTaskDto request, CancellationToken cancellationToken = default)
+        {
+              var task = await _dbContext.Tasks
+                .FirstOrDefaultAsync(x => x.Id.ToString().ToLower() == request.Id.ToLower(), 
+                                    cancellationToken: cancellationToken);
+            if (task == null)
+            {
+                return NotFound($"Task {request.Id} not found");
+            }
+
+            task.Title = request.Data.Title;
+            task.Description = request.Data.Description;
+            task.AssigneeId = request.Data.AssigneeId;
+            task.Status = request.Data.Status;
+            task.Priority = request.Data.Priority;
+
+            _dbContext.Tasks.Update(task);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            
+            return Ok();
+        }
+    }
+}
