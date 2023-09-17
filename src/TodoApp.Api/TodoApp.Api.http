@@ -1,6 +1,31 @@
-@TodoApp.Api_HostAddress = http://localhost:5021
-
-GET {{TodoApp.Api_HostAddress}}/weatherforecast/
+### Get list of tasks
+GET {{apiUrl}}/api/tasks/
 Accept: application/json
 
-###
+### Get task by id
+GET {{apiUrl}}/api/tasks/5ce7bafb-6485-4e3d-bed8-a6c74f553a67
+Accept: application/json
+
+### Create task
+POST {{apiUrl}}/api/tasks/
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "Task 1",
+    "description": "Task 1 description",
+    "priority": 1,
+    "status": 1
+}
+
+### Update task
+PUT {{apiUrl}}/api/tasks/5ce7bafb-6485-4e3d-bed8-a6c74f553a67
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "Task 2",
+    "description": "Task 2 description",
+    "priority": 1,
+    "status": 1
+}
