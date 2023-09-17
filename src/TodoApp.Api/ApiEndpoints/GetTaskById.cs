@@ -20,6 +20,7 @@ namespace TodoApp.Api.ApiEndpoints
         public override async Task<ActionResult<TaskDto>> HandleAsync([FromRoute] string id,
             CancellationToken cancellationToken = default)
         {
+            await Task.Delay(2000, cancellationToken);
             var task = await dbContext.Tasks
                 .FirstOrDefaultAsync(x => x.Id.ToString().ToLower() == id.ToLower(),
                     cancellationToken: cancellationToken);

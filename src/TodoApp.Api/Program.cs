@@ -16,6 +16,15 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddDbContext<TodoAppDbContext>(options =>
     options.UseSqlite("Data Source=TodoApp.db"));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 app.MigrateDbContext<TodoAppDbContext>((context, services) =>
 {
@@ -28,6 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();

@@ -1,11 +1,18 @@
+using Refit;
 using TodoApp.Web.Components;
+using TodoApp.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddServerComponents();
-
+builder.Services.AddRefitClient<ITaskApiServices>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!)
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

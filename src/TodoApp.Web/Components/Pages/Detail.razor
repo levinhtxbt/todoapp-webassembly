@@ -1,0 +1,11 @@
+@page "/todo/detail/{id}"
+
+<h3>Detail</h3>
+@if (_task is null)
+{
+    <LoadingIndicator></LoadingIndicator>
+}
+else
+{
+    <h1>@_task.Title</h1>
+}

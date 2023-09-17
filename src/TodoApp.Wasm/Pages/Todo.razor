@@ -1,10 +1,9 @@
 @page "/todo"
-@attribute [RenderModeWebAssembly]
 
 <PageTitle>Todo App</PageTitle>
 <h1>ToDo App</h1>
 
-@if (_tasks != null)
+@if (_tasks.Any())
 {
     <table class="table">
         <thead>
@@ -34,5 +33,5 @@
 }
 else
 {
-    <LoadingIndicator></LoadingIndicator>
+    <LoadingIndicator/>
 }

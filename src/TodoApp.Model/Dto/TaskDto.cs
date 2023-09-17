@@ -15,6 +15,7 @@ public class TaskDto
     public string? Description { get; set; } = string.Empty;
 
     public Guid? AssigneeId { get; set; }
+    public string? AssigneeName { get; set; }
 
     public Status Status { get; set; }
 
