@@ -1,9 +1,73 @@
 @page "/todo"
+@using TodoApp.Model.Enums
 
 <PageTitle>Todo App</PageTitle>
 <h1>ToDo App</h1>
 
-@if (tasks.Any())
+
+<EditForm Model="searchQuery">
+    <div class="row">
+        <div class="col-2">
+            <label class="form-label">Title</label>
+            <InputText class="form-control" @bind-Value="searchQuery.Title"></InputText>
+        </div>
+
+        <div class="col-2">
+            <label class="form-label">Assignee</label>
+            <InputSelect class="form-control" @bind-Value="searchQuery.AssigneeId">
+                <option>Select an assignee</option>
+                @foreach (var assignee in assignees)
+                {
+                    <option value="@assignee.Id">@assignee.Name</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="col-2">
+            <label class="form-label">Status</label>
+            <InputSelect class="form-control" @bind-Value="searchQuery.Status">
+                <option>Select a status</option>
+                @foreach (var status in Enum.GetNames(typeof(Status)))
+                {
+                    <option value="@status">@status</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="col-2">
+            <label class="form-label">Priority</label>
+            <InputSelect class="form-control" @bind-Value="searchQuery.Priority">
+                <option>Select a priority</option>
+                @foreach (var priority in Enum.GetNames(typeof(Priority)))
+                {
+                    <option value="@priority">@priority</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="col-2 pt-4">
+            <div class="row">
+
+                <div class="col-6">
+                    <button class="btn btn-primary" @onclick="Search">Search</button>
+
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-secondary" @onclick="ClearSearch">Clear</button>
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-2 pt-4 align-content-end" >
+             <button class="btn btn-success justify-content-end" @onclick="Search">Create</button>
+
+        </div>
+    </div>
+
+</EditForm>
+
+@if (tasks is not null)
 {
     <table class="table">
         <thead>
@@ -25,7 +89,11 @@
                 <td>@task.Priority</td>
                 <td>@task.Status</td>
                 <td>@task.CreatedAt.ToString("d")</td>
-                <td><a href="/todo/detail/@task.Id"><button class="btn btn-info">Detail</button></a></td>
+                <td>
+                    <a href="/todo/detail/@task.Id">
+                        <button class="btn btn-info">Detail</button>
+                    </a>
+                </td>
             </tr>
         }
         </tbody>

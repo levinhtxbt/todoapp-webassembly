@@ -6,7 +6,7 @@ namespace TodoApp.Wasm.Services;
 public interface ITaskApiServices
 {
     [Get("/api/tasks")]
-    Task<List<TaskDto>> GetTasksAsync();
+    Task<List<TaskDto>> GetTasksAsync([Query]SearchTaskDto searchTaskDto);
 
     [Get("/api/tasks/{id}")]
     Task<TaskDto> GetTaskByIdAsync(string id);
