@@ -4,9 +4,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <ScopedCssEnabled>true</ScopedCssEnabled>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Blazored.Toast" Version="4.1.0" />
         <PackageReference Include="Refit" Version="7.0.0" />
         <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
         <PackageReference Include="Refit.Newtonsoft.Json" Version="7.0.0" />

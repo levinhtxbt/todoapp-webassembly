@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Refit;
@@ -24,5 +25,6 @@ builder.Services.AddRefitClient<ITaskApiServices>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
 builder.Services.AddRefitClient<IUserApiService>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
+builder.Services.AddBlazoredToast();
 
 await builder.Build().RunAsync();

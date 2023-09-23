@@ -4,6 +4,7 @@
 @using TodoApp.Model.Enums
 @using TodoApp.Wasm.Services
 
+@inject IToastService toastService
 @inject NavigationManager NavManager
 
 <h3>Add new task</h3>
@@ -71,7 +72,16 @@
         var result = await taskApiServices.CreateTaskAsync(newTask);
         if (result.Id != Guid.Empty)
         {
+            toastService.ShowSuccess("Task created successfully", settings =>
+            {
+                settings.ShowProgressBar = true;
+                settings.PauseProgressOnHover = true;
+            });
             NavManager.NavigateTo("/todo");
+        }
+        else
+        {
+            toastService.ShowError("Something went wrong");
         }
     }
 
