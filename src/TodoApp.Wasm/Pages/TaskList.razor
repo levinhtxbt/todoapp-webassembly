@@ -84,9 +84,22 @@
         {
             <tr>
                 <td>@task.Title</td>
-                <td>@task.AssigneeName</td>
-                <td>@task.Priority</td>
-                <td>@task.Status</td>
+                <td>
+                    @if (string.IsNullOrEmpty(task.AssigneeName))
+                    {
+                        <div> @task.AssigneeName</div>
+                    }
+                    else
+                    {
+                        <div>"N/A"</div>
+                    }
+                </td>
+                <td>
+                    <TaskPriority Priority="@task.Priority"></TaskPriority>
+                </td>
+                <td>
+                    <TaskStatus Status="@task.Status"></TaskStatus>
+                </td>
                 <td>@task.CreatedAt.ToString("d")</td>
                 <td>
                     <a href="/todo/detail/@task.Id">

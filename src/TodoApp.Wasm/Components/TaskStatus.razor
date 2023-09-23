@@ -1,0 +1,21 @@
+@using TodoApp.Model.Enums
+
+@switch (Status)
+{
+    case Status.Todo:
+        <span class="badge bg-secondary">Todo</span>
+        break;
+    case Status.InProgress:
+        <span class="badge bg-primary">In Progress</span>
+        break;
+    case Status.Done:
+        <span class="badge bg-success">Done</span>
+        break;
+}
+
+@code {
+
+    [Parameter]
+    public Status Status { get; set; }
+
+}
