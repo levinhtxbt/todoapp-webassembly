@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Refit;
 using TodoApp.Wasm;
@@ -8,9 +9,20 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddRefitClient<ITaskApiServices>()
+var refitSettings = new RefitSettings();
+var serializerOptions = new JsonSerializerOptions()
+{
+    PropertyNameCaseInsensitive = true,
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+};
+
+serializerOptions.Converters.Add(new ObjectToInferredTypesConverter());
+var customSerializer = new SystemTextJsonContentSerializer(serializerOptions);
+refitSettings.ContentSerializer = customSerializer;
+
+builder.Services.AddRefitClient<ITaskApiServices>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
-builder.Services.AddRefitClient<IUserApiService>()
+builder.Services.AddRefitClient<IUserApiService>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
 
 await builder.Build().RunAsync();
