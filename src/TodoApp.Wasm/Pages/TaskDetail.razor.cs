@@ -4,16 +4,18 @@ using TodoApp.Wasm.Services;
 
 namespace TodoApp.Wasm.Pages;
 
-public partial class Todo
+public partial class TaskDetail
 {
-    private IEnumerable<TaskDto> _tasks = new List<TaskDto>();
-
+    [Parameter]
+    public string Id { get; set; }
+    
     [Inject]
     private ITaskApiServices _taskApiServices { get; set; }
+
+    private TaskDto? task;
     
     protected override async Task OnInitializedAsync()
     {
-        _tasks = await _taskApiServices.GetTasksAsync();
+        task = await _taskApiServices.GetTaskByIdAsync(Id);
     }
-    
 }

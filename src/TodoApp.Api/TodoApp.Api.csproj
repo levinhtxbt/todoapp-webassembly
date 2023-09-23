@@ -32,4 +32,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TodoApp.Model\TodoApp.Model.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ApiEndpoints\User\" />
+  </ItemGroup>
 </Project>

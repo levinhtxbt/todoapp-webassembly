@@ -3,7 +3,7 @@
 <PageTitle>Todo App</PageTitle>
 <h1>ToDo App</h1>
 
-@if (_tasks.Any())
+@if (tasks.Any())
 {
     <table class="table">
         <thead>
@@ -17,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var task in _tasks)
+        @foreach (var task in tasks)
         {
             <tr>
                 <td>@task.Title</td>

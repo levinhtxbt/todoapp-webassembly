@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using TodoApp.Api.Data;
 using TodoApp.Model.Dto;
 
-namespace TodoApp.Api.ApiEndpoints
+namespace TodoApp.Api.ApiEndpoints.Task
 {
     public class GetTasks(TodoAppDbContext dbContext) : EndpointBaseAsync
         .WithoutRequest
@@ -20,7 +20,6 @@ namespace TodoApp.Api.ApiEndpoints
         public override async Task<ActionResult<List<TaskDto>>> HandleAsync(
             CancellationToken cancellationToken = default)
         {
-            await Task.Delay(2000, cancellationToken);
             var task = await dbContext.Tasks
                 .Include(inc => inc.Assignee)
                 .Select(t => new TaskDto

@@ -1,0 +1,35 @@
+@page "/todo/detail/{id}"
+
+
+
+@if (task is null)
+{
+    <LoadingIndicator/>
+}
+else
+{
+    <div class="row">
+        <h3>Task @task.Id</h3>
+
+        <table class="table">
+            <tr>
+                <td>Title</td>
+                <td>@task.Title</td>
+            </tr>
+
+            <tr>
+                <td>Description</td>
+                <td>@task.Description</td>
+            </tr>
+
+            <tr>
+                <td>Assignee</td>
+                <td>@task.AssigneeName</td>
+            </tr>
+            <tr>
+                <td>Create time</td>
+                <td>@task.CreatedAt.ToString("d")</td>
+            </tr>
+        </table>
+    </div>
+}

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TodoApp.Api.Data;
 
-namespace TodoApp.Api.ApiEndpoints
+namespace TodoApp.Api.ApiEndpoints.Task
 {
     public class DeleteTask(TodoAppDbContext dbContext) : EndpointBaseAsync
         .WithRequest<string>
