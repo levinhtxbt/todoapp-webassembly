@@ -1,0 +1,51 @@
+@page "/todo/edit/{id}"
+@using TodoApp.Model.Enums
+@using TodoApp.Wasm.Services
+
+@inject NavigationManager NavManager
+@inject IToastService ToastService
+@inject ITaskApiServices TaskApiServices
+
+<PageTitle>Edit task</PageTitle>
+
+@if (UpdateTaskModel is null)
+{
+    <LoadingIndicator/>
+}
+else
+{
+    <div class="row">
+        <h3>Edit Task</h3>
+
+        <EditForm Model="UpdateTaskModel" OnSubmit="UpdateTaskAsync">
+            <DataAnnotationsValidator/>
+            @* <ValidationSummary/> *@
+            <div class="mb-3">
+                <label for="taskTitle" class="form-label">Title</label>
+                <InputText @bind-Value="UpdateTaskModel.Title" class="form-control" id="taskTitle" aria-describedby="taskTitleHelp"></InputText>
+                <ValidationMessage For="() => UpdateTaskModel.Title"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="taskDescription" class="form-label">Description</label>
+                <InputText @bind-Value="UpdateTaskModel.Description" class="form-control" id="taskDescription" aria-describedby="taskDescriptionHelp"></InputText>
+                <ValidationMessage For="() => UpdateTaskModel.Description"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="taskPriority" class="form-label">Priority</label>
+                <InputSelect @bind-Value="UpdateTaskModel.Priority" class="form-control" id="taskPriority" aria-describedby="taskPriorityHelp">
+                    <option>Select a priority</option>
+                    @foreach (var priority in Enum.GetNames(typeof(Priority)))
+                    {
+                        <option value="@priority">@priority</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => UpdateTaskModel.Priority"/>
+            </div>
+            <a href="/todo" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </EditForm>
+
+    </div>
+}

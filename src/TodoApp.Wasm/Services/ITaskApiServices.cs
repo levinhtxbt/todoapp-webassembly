@@ -15,7 +15,7 @@ public interface ITaskApiServices
     Task<TaskDto> CreateTaskAsync([Body] NewTaskDto taskDto);
 
     [Put("/api/tasks/{id}")]
-    Task<TaskDto> UpdateTaskAsync(string id, [Body]TaskDto taskDto);
+    Task UpdateTaskAsync(string id, [Body]UpdateTaskDto taskDto);
     
     [Delete("/api/tasks/{id}")]
     Task DeleteTaskAsync(string id);

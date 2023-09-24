@@ -2,7 +2,8 @@
 @using TodoApp.Model.Enums
 
 <PageTitle>Todo App</PageTitle>
-<h1>ToDo App</h1>
+
+<h1>ToDo</h1>
 
 
 <EditForm Model="searchQuery">
@@ -102,9 +103,9 @@
                 </td>
                 <td>@task.CreatedAt.ToString("d")</td>
                 <td>
-                    <a href="/todo/detail/@task.Id">
-                        <button class="btn btn-info">Detail</button>
-                    </a>
+                    <a href="/todo/detail/@task.Id" class="btn btn-sm btn-primary">Detail</a>
+                    <a href="/todo/edit/@task.Id" class="btn btn-sm btn-info">Edit</a>
+                    <a href="/todo/edit/@task.Id" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
         }
