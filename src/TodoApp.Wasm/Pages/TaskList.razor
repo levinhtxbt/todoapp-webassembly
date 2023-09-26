@@ -2,6 +2,11 @@
 @using TodoApp.Model.Enums
 @using TodoApp.Model.Dto
 
+@code {
+
+   
+}
+
 <PageTitle>Todo App</PageTitle>
 
 <h1>ToDo</h1>
@@ -46,14 +51,16 @@
                 <td>
                     <a href="/todo/detail/@task.Id" class="btn btn-sm btn-primary">Detail</a>
                     <a href="/todo/edit/@task.Id" class="btn btn-sm btn-info">Edit</a>
-                    <a href="/todo/edit/@task.Id" class="btn btn-sm btn-danger">Delete</a>
+                    <button class="btn btn-sm btn-danger" @onclick="() => OnDelete(task.Id)">Delete</button>
                 </td>
             </tr>
         }
         </tbody>
     </table>
+    <Confirmation @ref="confirmation" confirmEvent="OnConfirmDelete" />
 }
 else
 {
     <LoadingIndicator/>
 }
+

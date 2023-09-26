@@ -1,0 +1,66 @@
+﻿<!-- Modal -->
+<div class="modal  @ModalClass" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:@ModalDisplay">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="Hide"></button>
+            </div>
+            <div class="modal-body">
+                @Message
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="Hide">No</button>
+                <button type="button" class="btn btn-primary" @onclick="OnConfirm">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ShowModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+
+    [Parameter]
+    public bool ShowModal { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = "Are you sure to delete?";
+
+    [Parameter]
+    public string Message { get; set; } = "Are you sure to delete?";
+
+    public string ModalDisplay = "none;";
+    
+    public string ModalClass = "";
+    
+    [Parameter]
+    public EventCallback confirmEvent { get; set; }
+
+    public void Show()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowModal = true;
+        StateHasChanged();
+    }
+
+
+    public void Hide()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowModal = false;
+        StateHasChanged();
+    }
+    
+    public void OnConfirm()
+    {
+        confirmEvent.InvokeAsync(null);
+        Hide();
+    }
+
+}

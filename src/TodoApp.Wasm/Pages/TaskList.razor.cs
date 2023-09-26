@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using TodoApp.Model.Dto;
+using TodoApp.Wasm.Components;
 using TodoApp.Wasm.Services;
 
 namespace TodoApp.Wasm.Pages;
@@ -10,8 +12,12 @@ public partial class TaskList
 
     private SearchTaskDto searchQuery = new();
 
+    private Confirmation confirmation { get; set; }
+    
     [Inject]
     private ITaskApiServices taskApiServices { get; set; }
+    
+    private Guid DeleteId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -23,4 +29,18 @@ public partial class TaskList
         this.searchQuery = searchQuery;
         tasks = await taskApiServices.GetTasksAsync(searchQuery);
     }
+    
+    private void OnDelete(Guid id)
+    {
+        DeleteId = id;
+        confirmation.Show();
+        //confirmation.Show($"Are you sure you want to delete task {id}?", "Delete", OnConfirmDelete);
+    }
+    private async Task OnConfirmDelete()
+    {
+       await taskApiServices.DeleteTaskAsync(DeleteId.ToString());
+       await OnSearch(searchQuery);
+    }
+
+    
 }
