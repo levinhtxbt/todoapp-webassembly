@@ -1,71 +1,12 @@
 @page "/todo"
 @using TodoApp.Model.Enums
+@using TodoApp.Model.Dto
 
 <PageTitle>Todo App</PageTitle>
 
 <h1>ToDo</h1>
 
-
-<EditForm Model="searchQuery">
-    <div class="row">
-        <div class="col-2">
-            <label class="form-label">Title</label>
-            <InputText class="form-control" @bind-Value="searchQuery.Title"></InputText>
-        </div>
-
-        <div class="col-2">
-            <label class="form-label">Assignee</label>
-            <InputSelect class="form-control" @bind-Value="searchQuery.AssigneeId">
-                <option>Select an assignee</option>
-                @foreach (var assignee in assignees)
-                {
-                    <option value="@assignee.Id">@assignee.Name</option>
-                }
-            </InputSelect>
-        </div>
-
-        <div class="col-2">
-            <label class="form-label">Status</label>
-            <InputSelect class="form-control" @bind-Value="searchQuery.Status">
-                <option>Select a status</option>
-                @foreach (var status in Enum.GetNames(typeof(Status)))
-                {
-                    <option value="@status">@status</option>
-                }
-            </InputSelect>
-        </div>
-
-        <div class="col-2">
-            <label class="form-label">Priority</label>
-            <InputSelect class="form-control" @bind-Value="searchQuery.Priority">
-                <option>Select a priority</option>
-                @foreach (var priority in Enum.GetNames(typeof(Priority)))
-                {
-                    <option value="@priority">@priority</option>
-                }
-            </InputSelect>
-        </div>
-
-        <div class="col-2 pt-4">
-            <div class="row">
-
-                <div class="col-6">
-                    <button class="btn btn-primary" @onclick="Search">Search</button>
-
-                </div>
-                <div class="col-6">
-                    <button class="btn btn-secondary" @onclick="ClearSearch">Clear</button>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-2 pt-4 align-content-end">
-            <a href="/todo/new" class="btn btn-success justify-content-end">Create</a>
-        </div>
-    </div>
-
-</EditForm>
+<TaskFilter onSearch="OnSearch"></TaskFilter>
 
 @if (tasks is not null)
 {
