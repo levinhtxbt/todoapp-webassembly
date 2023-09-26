@@ -4,10 +4,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">@Title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="Hide"></button>
-            </div>
-            <div class="modal-body">
-                @Message
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="Hide">No</button>
@@ -30,9 +26,6 @@
     [Parameter]
     public string Title { get; set; } = "Are you sure to delete?";
 
-    [Parameter]
-    public string Message { get; set; } = "Are you sure to delete?";
-
     public string ModalDisplay = "none;";
     
     public string ModalClass = "";
@@ -40,11 +33,12 @@
     [Parameter]
     public EventCallback confirmEvent { get; set; }
 
-    public void Show()
+    public void Show(string? title = default)
     {
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowModal = true;
+        Title = title ?? Title;
         StateHasChanged();
     }
 

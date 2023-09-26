@@ -33,8 +33,7 @@ public partial class TaskList
     private void OnDelete(Guid id)
     {
         DeleteId = id;
-        confirmation.Show();
-        //confirmation.Show($"Are you sure you want to delete task {id}?", "Delete", OnConfirmDelete);
+        confirmation.Show("Are you sure you want to delete this task?");
     }
     private async Task OnConfirmDelete()
     {
