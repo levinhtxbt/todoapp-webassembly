@@ -1,0 +1,85 @@
+﻿@using TodoApp.Model.Dto.User
+@using TodoApp.Wasm.Services
+
+<div class="modal @ModalClass" id="assigneeModal" tabindex="-1" aria-labelledby="assigneeModalLabel" aria-hidden="true" style="display:@ModalDisplay">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <EditForm Model="SelectedAssignee">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assigneeModalLabel">Assign task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="Hide"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="col-form-label">Assignee:</label>
+                        <InputSelect @bind-Value="SelectedAssignee.Id" class="form-control">
+                            @foreach (var item in Assignee)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="Hide" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="OnSubmit">Save</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+@if (IsShow)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private bool IsShow { get; set; } = false;
+
+    public string ModalDisplay = "none;";
+
+    public string ModalClass = "";
+
+    public List<AssigneeDto> Assignee { get; set; } = new();
+
+    public AssigneeDto SelectedAssignee { get; set; } = new();
+
+    [Inject]
+    public IUserApiService UserApiService { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSubmitted { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Assignee = await UserApiService.GetAssigneesAsync();
+    }
+
+    public void Show()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        IsShow = true;
+        StateHasChanged();
+    }
+
+
+    public void Hide()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        IsShow = false;
+        StateHasChanged();
+    }
+
+
+    private async Task OnSubmit()
+    {
+        await OnSubmitted.InvokeAsync(SelectedAssignee.Id.ToString());
+        Hide();
+    }
+
+}

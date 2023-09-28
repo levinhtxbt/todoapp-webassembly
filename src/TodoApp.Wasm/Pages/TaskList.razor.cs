@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using TodoApp.Model.Dto;
 using TodoApp.Wasm.Components;
 using TodoApp.Wasm.Services;
@@ -12,13 +11,17 @@ public partial class TaskList
 
     private SearchTaskDto searchQuery = new();
 
-    private Confirmation confirmation { get; set; }
+    private ConfirmationModal ConfirmationModal { get; set; }
+    
+    private AssignTaskModal AssignTaskModal { get; set; }
     
     [Inject]
     private ITaskApiServices taskApiServices { get; set; }
     
     private Guid DeleteId { get; set; }
-
+    
+    private Guid ItemId { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
         tasks = await taskApiServices.GetTasksAsync(searchQuery);
@@ -30,16 +33,33 @@ public partial class TaskList
         tasks = await taskApiServices.GetTasksAsync(searchQuery);
     }
     
-    private void OnDelete(Guid id)
+    private void DeleteTask(Guid id)
     {
         DeleteId = id;
-        confirmation.Show("Are you sure you want to delete this task?");
+        ConfirmationModal.Show("Are you sure you want to delete this task?");
     }
-    private async Task OnConfirmDelete()
+    
+    private void AssignTask(Guid id)
+    {
+        ItemId = id;
+        AssignTaskModal.Show();
+    }
+    private async Task OnDelete()
     {
        await taskApiServices.DeleteTaskAsync(DeleteId.ToString());
        await OnSearch(searchQuery);
     }
+    
+    private async Task OnAssignTask(string assigneeId)
+    {
+        await taskApiServices.AssignTaskAsync(new AssignTaskDto
+        {
+            TaskId = ItemId,
+            AssigneeId = Guid.Parse(assigneeId)
+        });
+        await OnSearch(searchQuery);
+    }
+
 
     
 }
