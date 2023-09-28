@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using TodoApp.Model.Dto;
+using TodoApp.Model.Dto.User;
 using TodoApp.Wasm.Components;
 using TodoApp.Wasm.Services;
 
@@ -50,13 +51,14 @@ public partial class TaskList
        await OnSearch(searchQuery);
     }
     
-    private async Task OnAssignTask(string assigneeId)
+    private async Task OnAssignTask(AssigneeDto assignee)
     {
         await taskApiServices.AssignTaskAsync(new AssignTaskDto
         {
             TaskId = ItemId,
-            AssigneeId = Guid.Parse(assigneeId)
+            AssigneeId = assignee.Id
         });
+        
         await OnSearch(searchQuery);
     }
 

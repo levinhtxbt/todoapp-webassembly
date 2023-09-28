@@ -27,11 +27,11 @@
                 <td>
                     @if (string.IsNullOrEmpty(task.AssigneeName))
                     {
-                        <div> @task.AssigneeName</div>
+                        <div>N/A</div>
                     }
                     else
                     {
-                        <div>"N/A"</div>
+                        <div> @task.AssigneeName</div>
                     }
                 </td>
                 <td>
@@ -51,13 +51,12 @@
         }
         </tbody>
     </table>
-    
-    <ConfirmationModal @ref="ConfirmationModal" confirmEvent="OnDelete" />
-    
-    <AssignTaskModal @ref="AssignTaskModal" OnSubmitted="OnAssignTask" />
+
+    <ConfirmationModal @ref="ConfirmationModal" confirmEvent="OnDelete"/>
+
+    <AssignTaskModal @ref="AssignTaskModal" OnSubmitted="OnAssignTask"/>
 }
 else
 {
     <LoadingIndicator/>
 }
-

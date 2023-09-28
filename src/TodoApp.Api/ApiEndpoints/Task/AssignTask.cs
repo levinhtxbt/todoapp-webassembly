@@ -32,6 +32,6 @@ public class AssignTask(TodoAppDbContext dbContext) : EndpointBaseAsync
         dbContext.Tasks.Update(task);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Ok();
+         return Ok();
     }
 }
