@@ -40,7 +40,7 @@ namespace TodoApp.Api.ApiEndpoints.Task
 
             var count = await task.CountAsync(cancellationToken);
             var pagedTasks = await task
-                .Skip(request.Page * request.PageSize)
+                .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 

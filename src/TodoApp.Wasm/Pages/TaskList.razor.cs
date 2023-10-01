@@ -12,45 +12,58 @@ public partial class TaskList
 
     private SearchTaskDto searchQuery = new();
 
+    public MetaData MetaData { get; set; }
+
     private ConfirmationModal ConfirmationModal { get; set; }
-    
+
     private AssignTaskModal AssignTaskModal { get; set; }
-    
+
     [Inject]
     private ITaskApiServices taskApiServices { get; set; }
-    
+
     private Guid DeleteId { get; set; }
-    
+
     private Guid ItemId { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
-        tasks = await taskApiServices.GetTasksAsync(searchQuery);
+        searchQuery.PageSize = 3;
+        await OnSearch(searchQuery);
     }
 
     private async Task OnSearch(SearchTaskDto searchQuery)
     {
         this.searchQuery = searchQuery;
-        tasks = await taskApiServices.GetTasksAsync(searchQuery);
+
+        var result = await taskApiServices.GetTasksAsync(searchQuery);
+
+        MetaData = new MetaData(
+            result.Page,
+            result.TotalPages,
+            result.HasPreviousPage,
+            result.HasNextPage);
+        
+        tasks = result.Items;
     }
-    
+
     private void DeleteTask(Guid id)
     {
         DeleteId = id;
         ConfirmationModal.Show("Are you sure you want to delete this task?");
     }
-    
+
     private void AssignTask(Guid id)
     {
         ItemId = id;
         AssignTaskModal.Show();
     }
+
     private async Task OnDelete()
     {
-       await taskApiServices.DeleteTaskAsync(DeleteId.ToString());
-       await OnSearch(searchQuery);
+        await taskApiServices.DeleteTaskAsync(DeleteId.ToString());
+        await OnSearch(searchQuery);
     }
-    
+
     private async Task OnAssignTask(AssigneeDto assignee)
     {
         await taskApiServices.AssignTaskAsync(new AssignTaskDto
@@ -58,10 +71,13 @@ public partial class TaskList
             TaskId = ItemId,
             AssigneeId = assignee.Id
         });
-        
+
         await OnSearch(searchQuery);
     }
 
-
-    
+    private async Task OnPageSelected(int page)
+    {
+        searchQuery.Page = page;
+        await OnSearch(searchQuery);
+    }
 }

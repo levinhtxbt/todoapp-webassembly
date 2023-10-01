@@ -11,4 +11,5 @@ public class SearchTaskDto : PaginationRequest
     public Status? Status { get; set; }
     
     public Priority? Priority { get; set; }
+
 }

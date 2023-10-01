@@ -1,5 +1,6 @@
 @page "/todo"
 
+
 <PageTitle>Todo App</PageTitle>
 
 <h1>ToDo</h1>
@@ -16,7 +17,7 @@
             <th>Priority</th>
             <th>Status</th>
             <th>CreatedAt</th>
-            <th></th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -50,7 +51,10 @@
             </tr>
         }
         </tbody>
+
     </table>
+
+    <Pagination MetaData="MetaData" Spread="3" OnPageChanged="OnPageSelected"/>
 
     <ConfirmationModal @ref="ConfirmationModal" confirmEvent="OnDelete"/>
 
