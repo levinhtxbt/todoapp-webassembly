@@ -9,7 +9,7 @@ namespace TodoApp.Api.ApiEndpoints.Task
 {
     public class GetTasks(TodoAppDbContext dbContext) : EndpointBaseAsync
         .WithRequest<SearchTaskDto>
-        .WithActionResult<List<TaskDto>>
+        .WithActionResult<PagedList<TaskDto>>
     {
         [HttpGet("/api/tasks")]
         [SwaggerOperation(
@@ -17,10 +17,10 @@ namespace TodoApp.Api.ApiEndpoints.Task
             Description = "Get all tasks",
             OperationId = "Task.GetAll",
             Tags = new[] {"TaskEndpoints"})]
-        public override async Task<ActionResult<List<TaskDto>>> HandleAsync(
+        public override async Task<ActionResult<PagedList<TaskDto>>> HandleAsync(
             [FromQuery] SearchTaskDto request, CancellationToken cancellationToken = new())
         {
-            var task = await dbContext.Tasks
+            var task = dbContext.Tasks
                 .Include(inc => inc.Assignee)
                 .Where(w => request.AssigneeId == null || w.AssigneeId == request.AssigneeId)
                 .Where(w => request.Status == null || w.Status == request.Status)
@@ -36,10 +36,21 @@ namespace TodoApp.Api.ApiEndpoints.Task
                     AssigneeName = t.Assignee != null ? $"{t.Assignee.FirstName} {t.Assignee.LastName}" : null,
                     Status = t.Status,
                     Priority = t.Priority
-                })
+                });
+
+            var count = await task.CountAsync(cancellationToken);
+            var pagedTasks = await task
+                .Skip(request.Page * request.PageSize)
+                .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            return Ok(task);
+            return Ok(new PagedList<TaskDto>
+            {
+                Items = pagedTasks,
+                TotalCount = count,
+                Page = request.Page,
+                PageSize = request.PageSize
+            });
         }
     }
 }

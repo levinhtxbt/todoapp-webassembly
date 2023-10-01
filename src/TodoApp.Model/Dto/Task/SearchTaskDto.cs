@@ -2,7 +2,7 @@ using TodoApp.Model.Enums;
 
 namespace TodoApp.Model.Dto;
 
-public class SearchTaskDto
+public class SearchTaskDto : PaginationRequest
 {
     public string? Title { get; set; }
 
