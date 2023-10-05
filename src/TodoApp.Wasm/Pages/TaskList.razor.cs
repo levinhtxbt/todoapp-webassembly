@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.AspNetCore.Components;
 using TodoApp.Model.Dto;
 using TodoApp.Model.Dto.User;
@@ -25,10 +26,14 @@ public partial class TaskList
 
     private Guid ItemId { get; set; }
 
+    [CascadingParameter]
+    public Error? Error { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         searchQuery.PageSize = 3;
         await OnSearch(searchQuery);
+        Error.ProcessError(new EvaluateException("ABC"));
     }
 
     private async Task OnSearch(SearchTaskDto searchQuery)
@@ -42,7 +47,7 @@ public partial class TaskList
             result.TotalPages,
             result.HasPreviousPage,
             result.HasNextPage);
-        
+
         tasks = result.Items;
     }
 
