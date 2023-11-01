@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TodoApp.Api.Data;
+using TodoApp.Api.Entities;
 using TodoApp.Api.Extensions;
+using Swashbuckle.AspNetCore.Filters;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +17,23 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApp Api", Version = "v1" });
     c.EnableAnnotations();
+    c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        
+    });
+    c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 builder.Services.AddDbContext<TodoAppDbContext>(options =>
     options.UseSqlite("Data Source=TodoApp.db"));
+
+builder.Services.AddAuthentication();
+
+builder.Services.AddIdentityApiEndpoints<User>()
+    .AddEntityFrameworkStores<TodoAppDbContext>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -40,5 +58,6 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseRouting();
+app.MapIdentityApi<User>();
 app.MapControllers();
 app.Run();
