@@ -25,6 +25,8 @@ builder.Services.AddRefitClient<ITaskApiServices>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
 builder.Services.AddRefitClient<IUserApiService>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
+builder.Services.AddRefitClient<IIdentityApiService>(refitSettings)
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
 builder.Services.AddBlazoredToast();
 
 await builder.Build().RunAsync();
