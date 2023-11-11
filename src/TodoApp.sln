@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Api", "TodoApp.Api\TodoApp.Api.csproj", "{D428C681-28CE-4677-8BAB-56B6F126E8D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Web", "TodoApp.Web\TodoApp.Web.csproj", "{5BD085AC-0BD1-49A1-86C2-C445DFD52455}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Model", "TodoApp.Model\TodoApp.Model.csproj", "{0B525318-1C9F-4C75-9356-6B5152DDC94A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Wasm", "TodoApp.Wasm\TodoApp.Wasm.csproj", "{AA6B00CF-B929-4C63-890E-AF221FDB96CE}"
@@ -24,10 +22,6 @@ Global
 		{D428C681-28CE-4677-8BAB-56B6F126E8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D428C681-28CE-4677-8BAB-56B6F126E8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D428C681-28CE-4677-8BAB-56B6F126E8D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BD085AC-0BD1-49A1-86C2-C445DFD52455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BD085AC-0BD1-49A1-86C2-C445DFD52455}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BD085AC-0BD1-49A1-86C2-C445DFD52455}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BD085AC-0BD1-49A1-86C2-C445DFD52455}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0B525318-1C9F-4C75-9356-6B5152DDC94A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0B525318-1C9F-4C75-9356-6B5152DDC94A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B525318-1C9F-4C75-9356-6B5152DDC94A}.Release|Any CPU.ActiveCfg = Release|Any CPU

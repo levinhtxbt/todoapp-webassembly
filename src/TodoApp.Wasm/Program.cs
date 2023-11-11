@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
+using Blazored.LocalStorage;
 using Blazored.Toast;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Refit;
@@ -27,6 +29,10 @@ builder.Services.AddRefitClient<IUserApiService>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
 builder.Services.AddRefitClient<IIdentityApiService>(refitSettings)
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Api")!));
+
 builder.Services.AddBlazoredToast();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+builder.Services.AddAuthorizationCore();
 
 await builder.Build().RunAsync();

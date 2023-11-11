@@ -19,7 +19,7 @@ public class TodoAppDbContextSeed
                 Email = "admin1@gmail.com",
                 NormalizedEmail = "ADMIN1@GMAIL.COM",
                 PhoneNumber = "032132131",
-                UserName = "admin",
+                    UserName = "admin",
                 NormalizedUserName = "ADMIN",
                 SecurityStamp = Guid.NewGuid().ToString()
             };

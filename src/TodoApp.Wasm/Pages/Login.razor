@@ -1,28 +1,39 @@
 @page "/login"
 @using TodoApp.Model.Dto.Identity
 @using TodoApp.Wasm.Services
+@using Microsoft.AspNetCore.Components.Authorization
 
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject NavigationManager NavManager
 @inject IIdentityApiService IdentityApiService
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Login</h3>
 
+
+@if (ShowErrors)
+{
+    <div class="alert alert-danger">
+        <p>@Error</p>
+    </div>
+}
 
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Login</h5>
         <EditForm Model="model">
-            <DataAnnotationsValidator></DataAnnotationsValidator>
-            <ValidationSummary></ValidationSummary>
+            @* <DataAnnotationsValidator></DataAnnotationsValidator> *@
+            @* <ValidationSummary></ValidationSummary> *@
 
             <div class="form-group">
                 <label for="email">Email</label>
                 <InputText id="email" class="form-control" @bind-Value="model.Email"/>
+                <ValidationMessage For="() => model.Email"></ValidationMessage>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
                 <InputText id="password" class="form-control" @bind-Value="model.Password"/>
+                <ValidationMessage For="() => model.Password"></ValidationMessage>
             </div>
 
             <div class="form-group">
@@ -35,10 +46,30 @@
 @code {
     public LoginRequest model { get; set; } = new();
 
+    public bool ShowErrors { get; set; }
+
+    public string Error { get; set; }
+
     public async Task LoginAsync()
     {
-        var response = await IdentityApiService.LoginAsync(model);
-        NavManager.NavigateTo("/");
+        try
+        {
+            var response = await IdentityApiService.LoginAsync(model);
+            
+            await LocalStorage.SetItemAsync("authToken", response.AccessToken);
+            await LocalStorage.SetItemAsync("refreshToken", response.RefreshToken);
+            await LocalStorage.SetItemAsync("expires", response.ExpiresIn);
+            await LocalStorage.SetItemAsync("tokenType", response.TokenType);
+
+            ((ApiAuthenticationStateProvider) AuthenticationStateProvider).MarkUserAsAuthenticated(model.Email);
+
+            NavManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            ShowErrors = true;
+            Error = e.Message;
+        }
     }
 
 }

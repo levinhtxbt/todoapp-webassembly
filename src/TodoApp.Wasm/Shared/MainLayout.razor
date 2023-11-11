@@ -1,12 +1,13 @@
 ﻿@inherits LayoutComponentBase
 @using Blazored.Toast.Configuration
-
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider;
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="5"
                 IconType="IconType.FontAwesome"
                 SuccessClass="success-toast-override"
                 SuccessIcon="fa fa-thumbs-up"
-                ErrorIcon="fa fa-bug" />
+                ErrorIcon="fa fa-bug"/>
 
 <div class="page">
     <div class="sidebar">
@@ -15,6 +16,18 @@
 
     <main>
         <div class="top-row px-4">
+            <AuthorizeView>
+
+                <Authorized>
+                    Hello @context.User.Identity!.Name
+
+                    <a href="/logout" target="_self">Logout</a>
+                </Authorized>
+
+                <NotAuthorized>
+                    <a href="/login" target="_self">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
 

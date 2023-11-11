@@ -1,0 +1,27 @@
+@page "/logout"
+@using Microsoft.AspNetCore.Components.Authorization
+@using Blazored.LocalStorage
+@using TodoApp.Wasm.Services
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILocalStorageService LocalStorageService
+
+<h3>Sorry to see you go!</h3>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LocalStorageService.RemoveItemAsync("authToken");
+        await LocalStorageService.RemoveItemAsync("refreshToken");
+        await LocalStorageService.RemoveItemAsync("expires");
+        await LocalStorageService.RemoveItemAsync("tokenType");
+
+        ((ApiAuthenticationStateProvider) AuthenticationStateProvider).MarkUserAsLoggedOut();
+
+        await Task.Delay(2000);
+        
+        NavigationManager.NavigateTo("/");
+    }
+
+}
